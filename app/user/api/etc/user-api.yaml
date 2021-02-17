@@ -1,0 +1,23 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 8888
+
+Auth:
+  AccessSecret: BoqyLvtteYmxhZjbYCD7EPe9epTUuUmZ    # JWT Token Keys
+  AccessExpire: 3600                                # 60 Minutes
+
+Prometheus:
+  Host: 127.0.0.1
+  Port: 9080
+  Path: /metrics
+
+CacheRedis:
+  Host: 127.0.0.1:6379
+  Type: node
+  Weight: 500
+
+UserRpc:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: user.rpc
