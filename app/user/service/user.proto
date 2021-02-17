@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/any.proto";
+
+message Profile {
+  int64 id = 1;
+  int64 kind = 2;
+  string role = 3;
+  string phone = 4;
+  string name = 5;
+  string nickname = 6;
+  string gender = 7;
+  string openId = 8;
+  string from = 9;
+  string password = 10;
+  string idNumber = 11;
+  string organize = 12;
+  string department = 13;
+  string jobTitle = 14;
+  string avatar = 15;
+  string address = 16;
+  int64 createTime = 17;
+  int64 updateTime = 20;
+  int64 deleteTime = 21;
+}
+
+message RegReq {
+  Profile profile = 1;
+  string captcha = 2;
+}
+message LoginReq {
+  string phone = 1;
+  string password = 2;
+  string captcha = 3;
+}
+message LogoutReq {
+  string phone = 1;
+}
+message CommonResp {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Any data = 20;
+}
+
+message ProfileViewReq {
+  string phone = 1;
+}
+message ProfileUpdateReq {
+  Profile profile = 1;
+}
+
+service User {
+  rpc Reg(RegReq) returns(CommonResp);
+  rpc Login(LoginReq) returns(CommonResp);
+  rpc Logout(LogoutReq) returns(CommonResp);
+
+  rpc ProfileView(ProfileViewReq) returns(CommonResp);
+  rpc ProfileUpdate(ProfileUpdateReq) returns(CommonResp);
+}

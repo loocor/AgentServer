@@ -1,0 +1,109 @@
+syntax = "v1"
+
+info(
+	author: "Loocor"
+	email: "loocor@gmail.com"
+	title: "accout"
+	desc: "accout management for agent server"
+)
+
+type Profile {
+	Id         int64  `json:"id, optional"`
+	Kind       int64  `json:"kind, options=0|1|2|3|4"`
+	Role       string `json:"role, optional"`
+	Phone      string `json:"phone"`
+	Name       string `json:"name"`
+	Nickname   string `json:"nickname, optional"`
+	Gender     string `json:"gender"`
+	OpenId     string `json:"openId, optional"`
+	From       string `json:"from"`
+	Password   string `json:"password"`
+	IdNumber   string `json:"idNumber"`
+	Organize   string `json:"organize, optional"`
+	Department string `json:"department, optional"`
+	JobTitle   string `json:"jobTitle, optional"`
+	Avatar     string `json:"avatar, optional"`
+	Address    string `json:"address, optional"`
+	CreateTime int64  `json:"createTime, optional"`
+	UpdateTime int64  `json:"updateTime, optional"`
+	DeleteTime int64  `json:"deleteTime, optional"`
+}
+
+type (
+	// for account auth
+	AuthResp {
+		AccessToken  string `json:"accessToken"`
+		AccessExpire int64  `json:"accessExpire"`
+		RefreshAfter int64  `json:"refreshAfter"`
+	}
+
+	// for account reg, login & logout
+	RegReq {
+		Captcha string  `json:"captcha"`
+		Profile Profile `json:"profile"`
+	}
+
+	LoginReq {
+		Phone    string `json:"phone"`
+		Password string `json:"password"`
+		Captcha  string `json:"captcha"`
+	}
+
+	LogoutReq {
+		Phone string `json:"phone"`
+	}
+
+	CommonResp {
+		Code    int32       `json:"code"`
+		Message string      `json:"message"`
+		Data    interface{} `json:"data, optional"`
+	}
+
+	// for profile view & update
+	ProfileViewReq {
+		Phone string `json:"phone"`
+	}
+
+	ProfileUpdateReq {
+		Profile Profile `json:"profile"`
+	}
+)
+
+service user-api {
+	@doc(summary: "user auth token")
+	
+	@handler AuthHandler
+	post /api/v1/auth () returns (AuthResp)
+}
+
+@server(
+	jwt: Auth
+)
+
+service user-api {
+	@doc(summary: "user reg, login and logout")
+	
+	@handler RegHandler
+	post /api/v1/user/reg (RegReq) returns (CommonResp)
+	
+	@handler LoginHandler
+	post /api/v1/user/login (LoginReq) returns (CommonResp)
+	
+	@handler LogoutHandler
+	post /api/v1/user/logout (LogoutReq) returns (CommonResp)
+}
+
+@server(
+	jwt: Auth
+	middleware: UserCheck
+)
+
+service user-api {
+	@doc(summary: "user profile view and update")
+	
+	@handler ProfileViewHandler
+	get /api/v1/user/profile (ProfileViewReq) returns (CommonResp)
+	
+	@handler ProfileUpdateHandler
+	post /api/v1/user/profile (ProfileUpdateReq) returns (CommonResp)
+}
