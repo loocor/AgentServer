@@ -1,0 +1,91 @@
+### 1 auth
+POST {{baseUrl}}/auth
+Content-Type: application/json
+
+{}
+
+> {% client.global.set("auth_token",response.body.accessToken); %}
+
+### 2 reg
+### The password is MD5 encrypted.
+POST {{baseUrl}}/user/reg
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "captcha": "captcha",
+  "profile": {
+    "kind": 0,
+    "role": "agent",
+    "phone": "{{testPhone2}}",
+    "name": "高成",
+    "nickname": "高成",
+    "gender": "男",
+    "openId": "",
+    "from": "app",
+    "password": "password",
+    "idNumber": "{{testIDNumber2}}",
+    "organize": "WAKE.LINK",
+    "department": "R&D",
+    "jobTitle": "PM",
+    "avatar": "",
+    "address": ""
+  }
+}
+
+### 3 login
+### The password is MD5 encrypted.
+POST {{baseUrl}}/user/login
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "phone": "18280058405",
+  "password": "Password",
+  "captcha": "captcha"
+}
+
+### 4 logout
+POST {{baseUrl}}/user/logout
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "phone": "17708001490"
+}
+
+### 5 Profile view
+GET {{baseUrl}}/user/profile
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "phone": "{{testPhone1}}"
+}
+
+### 6 Profile update
+### The password is MD5 encrypted.
+POST {{baseUrl}}/user/profile
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "profile": {
+    "id": 1,
+    "kind": 0,
+    "role": "agent",
+    "phone": "{{testPhone1}}",
+    "name": "陈诚",
+    "nickname": "陈诚",
+    "gender": "男",
+    "openId": "",
+    "from": "app",
+    "password": "password",
+    "idNumber": "{{testIDNumber3}}",
+    "jobTitle": "GM",
+    "organize": "WAKE.LINK",
+    "department": "R&D",
+    "avatar": "",
+    "address": ""
+  }
+}
