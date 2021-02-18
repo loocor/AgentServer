@@ -19,4 +19,6 @@ const (
 	// Login
 	PasswordWrong codes.Code = 2011
 	UserNotFound  codes.Code = 2012
+	UserFreeze    codes.Code = 2013
+	UserRemoved   codes.Code = 2014
 )

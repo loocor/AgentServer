@@ -36,7 +36,8 @@ type (
 
 	User struct {
 		Id         int64        `db:"id"`
-		Kind       int64        `db:"kind"`       // 账户类型 0渠道经纪人 1渠道部门主管 2渠道机构主管 3甲方项目主管 4甲方集团主管
+		Kind       int64        `db:"kind"`       // 账户类型 0经纪人 1渠部主管 2渠总主管 3甲项主管 4甲总主管
+		State      int64        `db:"state"`      // 账户状态 0注册 1正常 2冻结 3移除
 		Role       string       `db:"role"`       // 账户角色
 		From       string       `db:"from"`       // 注册来源
 		Phone      string       `db:"phone"`      // 账户号码
@@ -65,8 +66,8 @@ func NewUserModel(conn sqlx.SqlConn) UserModel {
 }
 
 func (m *defaultUserModel) Insert(data User) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-	ret, err := m.conn.Exec(query, data.Kind, data.Role, data.From, data.Phone, data.Name, data.Nickname, data.Gender, data.Password, data.IdNumber, data.OpenId, data.Organize, data.Department, data.JobTitle, data.Avatar, data.Address, data.DeleteTime)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
+	ret, err := m.conn.Exec(query, data.Kind, data.State, data.Role, data.From, data.Phone, data.Name, data.Nickname, data.Gender, data.Password, data.IdNumber, data.OpenId, data.Organize, data.Department, data.JobTitle, data.Avatar, data.Address, data.DeleteTime)
 	return ret, err
 }
 
@@ -114,7 +115,7 @@ func (m *defaultUserModel) FindOneByIdNumber(idNumber string) (*User, error) {
 
 func (m *defaultUserModel) Update(data User) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-	_, err := m.conn.Exec(query, data.Kind, data.Role, data.From, data.Phone, data.Name, data.Nickname, data.Gender, data.Password, data.IdNumber, data.OpenId, data.Organize, data.Department, data.JobTitle, data.Avatar, data.Address, data.DeleteTime, data.Id)
+	_, err := m.conn.Exec(query, data.Kind, data.State, data.Role, data.From, data.Phone, data.Name, data.Nickname, data.Gender, data.Password, data.IdNumber, data.OpenId, data.Organize, data.Department, data.JobTitle, data.Avatar, data.Address, data.DeleteTime, data.Id)
 	return err
 }
 
