@@ -8,6 +8,9 @@ const (
 	// Common
 	Unknown         codes.Code = 1001
 	InvalidArgument codes.Code = 1002
+	DBInsertError   codes.Code = 1011
+	DBUpdateError   codes.Code = 1012
+	DBDeleteError   codes.Code = 1013
 
 	// Reg
 	PhoneAlreadyExists    codes.Code = 2001
