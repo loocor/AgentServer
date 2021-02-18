@@ -14,20 +14,24 @@ import (
 )
 
 type (
-	CommonResp       = user.CommonResp
-	ProfileViewReq   = user.ProfileViewReq
-	ProfileUpdateReq = user.ProfileUpdateReq
-	Profile          = user.Profile
-	RegReq           = user.RegReq
-	LoginReq         = user.LoginReq
-	LogoutReq        = user.LogoutReq
+	LoginResp         = user.LoginResp
+	Profile           = user.Profile
+	RegReq            = user.RegReq
+	RegResp           = user.RegResp
+	ProfileViewReq    = user.ProfileViewReq
+	ProfileViewResp   = user.ProfileViewResp
+	ProfileUpdateReq  = user.ProfileUpdateReq
+	ProfileUpdateResp = user.ProfileUpdateResp
+	LoginReq          = user.LoginReq
+	LogoutReq         = user.LogoutReq
+	LogoutResp        = user.LogoutResp
 
 	User interface {
-		Reg(ctx context.Context, in *RegReq) (*CommonResp, error)
-		Login(ctx context.Context, in *LoginReq) (*CommonResp, error)
-		Logout(ctx context.Context, in *LogoutReq) (*CommonResp, error)
-		ProfileView(ctx context.Context, in *ProfileViewReq) (*CommonResp, error)
-		ProfileUpdate(ctx context.Context, in *ProfileUpdateReq) (*CommonResp, error)
+		Reg(ctx context.Context, in *RegReq) (*RegResp, error)
+		Login(ctx context.Context, in *LoginReq) (*LoginResp, error)
+		Logout(ctx context.Context, in *LogoutReq) (*LogoutResp, error)
+		ProfileView(ctx context.Context, in *ProfileViewReq) (*ProfileViewResp, error)
+		ProfileUpdate(ctx context.Context, in *ProfileUpdateReq) (*ProfileUpdateResp, error)
 	}
 
 	defaultUser struct {
@@ -41,27 +45,27 @@ func NewUser(cli zrpc.Client) User {
 	}
 }
 
-func (m *defaultUser) Reg(ctx context.Context, in *RegReq) (*CommonResp, error) {
+func (m *defaultUser) Reg(ctx context.Context, in *RegReq) (*RegResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.Reg(ctx, in)
 }
 
-func (m *defaultUser) Login(ctx context.Context, in *LoginReq) (*CommonResp, error) {
+func (m *defaultUser) Login(ctx context.Context, in *LoginReq) (*LoginResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.Login(ctx, in)
 }
 
-func (m *defaultUser) Logout(ctx context.Context, in *LogoutReq) (*CommonResp, error) {
+func (m *defaultUser) Logout(ctx context.Context, in *LogoutReq) (*LogoutResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.Logout(ctx, in)
 }
 
-func (m *defaultUser) ProfileView(ctx context.Context, in *ProfileViewReq) (*CommonResp, error) {
+func (m *defaultUser) ProfileView(ctx context.Context, in *ProfileViewReq) (*ProfileViewResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.ProfileView(ctx, in)
 }
 
-func (m *defaultUser) ProfileUpdate(ctx context.Context, in *ProfileUpdateReq) (*CommonResp, error) {
+func (m *defaultUser) ProfileUpdate(ctx context.Context, in *ProfileUpdateReq) (*ProfileUpdateResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.ProfileUpdate(ctx, in)
 }

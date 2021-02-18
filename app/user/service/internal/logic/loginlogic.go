@@ -27,7 +27,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) Login(in *user.LoginReq) (*user.CommonResp, error) {
+func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	// Check parameter
 	if len(strings.TrimSpace(in.Phone)) == 0 || len(strings.TrimSpace(in.Password)) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "login touched, parameter error")
@@ -46,9 +46,8 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.CommonResp, error) {
 	}
 
 	// Return result
-	return &user.CommonResp{
+	return &user.LoginResp{
 		Code:    0,
 		Message: "login Succeed",
-		Data:    nil, // TODO: Return profile with id
 	}, nil
 }

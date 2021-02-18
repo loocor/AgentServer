@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	"strings"
-	"time"
 
 	"google.golang.org/grpc/status"
 
@@ -29,7 +28,7 @@ func NewRegLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegLogic {
 	}
 }
 
-func (l *RegLogic) Reg(in *user.RegReq) (*user.CommonResp, error) {
+func (l *RegLogic) Reg(in *user.RegReq) (*user.RegResp, error) {
 	// Check parameter
 	if len(strings.TrimSpace(in.Profile.Phone)) == 0 || len(strings.TrimSpace(in.Profile.IdNumber)) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "reg touched, parameter error")
@@ -48,7 +47,7 @@ func (l *RegLogic) Reg(in *user.RegReq) (*user.CommonResp, error) {
 	}
 
 	// Insert data to DB
-	_, _ = l.svcCtx.UserModel.Insert(
+	_, err = l.svcCtx.UserModel.Insert(
 		model.User{
 			Kind:       in.Profile.Kind,
 			Role:       in.Profile.Role,
@@ -65,14 +64,15 @@ func (l *RegLogic) Reg(in *user.RegReq) (*user.CommonResp, error) {
 			JobTitle:   in.Profile.JobTitle,
 			Avatar:     in.Profile.Avatar,
 			Address:    in.Profile.Address,
-			CreateTime: time.Now(),
 		},
 	)
+	if err != nil {
+		return nil, status.Errorf(codes.DBInsertError, "reg touched, db insert failed")
+	}
 
 	// Return result
-	return &user.CommonResp{
+	return &user.RegResp{
 		Code:    0,
 		Message: "reg succeed",
-		Data:    nil, // TODO: Return profile with id
 	}, nil
 }

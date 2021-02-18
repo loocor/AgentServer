@@ -28,7 +28,7 @@ func NewProfileUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pro
 	}
 }
 
-func (l *ProfileUpdateLogic) ProfileUpdate(in *user.ProfileUpdateReq) (*user.CommonResp, error) {
+func (l *ProfileUpdateLogic) ProfileUpdate(in *user.ProfileUpdateReq) (*user.ProfileUpdateResp, error) {
 	// Check parameter
 	if in.Profile.Id == 0 || len(strings.TrimSpace(in.Profile.Phone)) == 0 || len(strings.TrimSpace(in.Profile.IdNumber)) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "profile update touched, parameter error")
@@ -70,15 +70,11 @@ func (l *ProfileUpdateLogic) ProfileUpdate(in *user.ProfileUpdateReq) (*user.Com
 			Address:    in.Profile.Address,
 		},
 	)
-
 	if err != nil {
-		return &user.CommonResp{
-			Code:    150,
-			Message: "profile update failed",
-		}, nil
+		return nil, status.Errorf(codes.DBUpdateError, "reg touched, db update failed")
 	}
 
-	return &user.CommonResp{
+	return &user.ProfileUpdateResp{
 		Code:    0,
 		Message: "profile update succeed",
 	}, nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/jinzhu/copier"
 	"google.golang.org/grpc/status"
 
 	"agent/app/user/service/internal/svc"
@@ -27,21 +28,31 @@ func NewProfileViewLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Profi
 	}
 }
 
-func (l *ProfileViewLogic) ProfileView(in *user.ProfileViewReq) (*user.CommonResp, error) {
+func (l *ProfileViewLogic) ProfileView(in *user.ProfileViewReq) (*user.ProfileViewResp, error) {
 	// Check parameter
 	if len(strings.TrimSpace(in.Phone)) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "profile view touched, parameter error")
 	}
 
 	// Try to get record
-	_, err := l.svcCtx.UserModel.FindOneByPhone(in.Phone)
+	resp, err := l.svcCtx.UserModel.FindOneByPhone(in.Phone)
 	if err != nil {
 		return nil, status.Errorf(codes.UserNotFound, "profile view touched, user not exist")
 	}
 
-	return &user.CommonResp{
+	// Copy record to profile
+	profile := &user.Profile{}
+	if err := copier.Copy(&profile, &resp); err != nil {
+		logx.Error(err)
+	}
+
+	// Correct timestamp
+	profile.CreateTime = resp.CreateTime.Unix()
+	profile.UpdateTime = resp.UpdateTime.Unix()
+
+	return &user.ProfileViewResp{
 		Code:    0,
-		Message: "profile view touched",
-		Data:    nil, // TODO: Return profile info
+		Message: "profile view succeed",
+		Profile: profile,
 	}, nil
 }

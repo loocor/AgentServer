@@ -21,27 +21,27 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) Reg(ctx context.Context, in *user.RegReq) (*user.CommonResp, error) {
+func (s *UserServer) Reg(ctx context.Context, in *user.RegReq) (*user.RegResp, error) {
 	l := logic.NewRegLogic(ctx, s.svcCtx)
 	return l.Reg(in)
 }
 
-func (s *UserServer) Login(ctx context.Context, in *user.LoginReq) (*user.CommonResp, error) {
+func (s *UserServer) Login(ctx context.Context, in *user.LoginReq) (*user.LoginResp, error) {
 	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }
 
-func (s *UserServer) Logout(ctx context.Context, in *user.LogoutReq) (*user.CommonResp, error) {
+func (s *UserServer) Logout(ctx context.Context, in *user.LogoutReq) (*user.LogoutResp, error) {
 	l := logic.NewLogoutLogic(ctx, s.svcCtx)
 	return l.Logout(in)
 }
 
-func (s *UserServer) ProfileView(ctx context.Context, in *user.ProfileViewReq) (*user.CommonResp, error) {
+func (s *UserServer) ProfileView(ctx context.Context, in *user.ProfileViewReq) (*user.ProfileViewResp, error) {
 	l := logic.NewProfileViewLogic(ctx, s.svcCtx)
 	return l.ProfileView(in)
 }
 
-func (s *UserServer) ProfileUpdate(ctx context.Context, in *user.ProfileUpdateReq) (*user.CommonResp, error) {
+func (s *UserServer) ProfileUpdate(ctx context.Context, in *user.ProfileUpdateReq) (*user.ProfileUpdateResp, error) {
 	l := logic.NewProfileUpdateLogic(ctx, s.svcCtx)
 	return l.ProfileUpdate(in)
 }

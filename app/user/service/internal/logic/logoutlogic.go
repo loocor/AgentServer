@@ -23,8 +23,8 @@ func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LogoutLogi
 	}
 }
 
-func (l *LogoutLogic) Logout(in *user.LogoutReq) (*user.CommonResp, error) {
-	return &user.CommonResp{
+func (l *LogoutLogic) Logout(in *user.LogoutReq) (*user.LogoutResp, error) {
+	return &user.LogoutResp{
 		Code:    0,
 		Message: "logout touched",
 	}, nil
