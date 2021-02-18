@@ -30,6 +30,7 @@ func (l *ProfileUpdateLogic) ProfileUpdate(req types.ProfileUpdateReq) (*types.P
 			Profile: &userclient.Profile{
 				Id:         req.Profile.Id,
 				Kind:       req.Profile.Kind,
+				State:      req.Profile.State,
 				Role:       req.Profile.Role,
 				Phone:      req.Profile.Phone,
 				Name:       req.Profile.Name,

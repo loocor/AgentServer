@@ -30,6 +30,7 @@ func (l *RegLogic) Reg(req types.RegReq) (*types.RegResp, error) {
 			Captcha: req.Captcha,
 			Profile: &userclient.Profile{
 				Kind:       req.Profile.Kind,
+				State:      req.Profile.State,
 				Role:       req.Profile.Role,
 				Phone:      req.Profile.Phone,
 				Name:       req.Profile.Name,

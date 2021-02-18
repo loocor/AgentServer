@@ -4,6 +4,7 @@ package types
 type Profile struct {
 	Id         int64  `json:"id, optional"`
 	Kind       int64  `json:"kind, options=0|1|2|3|4"`
+	State      int64  `json:"state, options=0|1|2|3"`
 	Role       string `json:"role, optional"`
 	Phone      string `json:"phone"`
 	Name       string `json:"name"`
