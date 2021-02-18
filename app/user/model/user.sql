@@ -2,7 +2,8 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
 (
     `id`          bigint unsigned                                               NOT NULL AUTO_INCREMENT,
-    `kind`        int                                                           NOT NULL DEFAULT '0' COMMENT '账户类型 0渠道经纪人 1渠道部门主管 2渠道机构主管 3甲方项目主管 4甲方集团主管',
+    `kind`        int                                                           NOT NULL DEFAULT '0' COMMENT '账户类型 0经纪人 1渠部主管 2渠总主管 3甲项主管 4甲总主管',
+    `state`       int                                                           NOT NULL DEFAULT '0' COMMENT '账户状态 0注册 1正常 2冻结 3移除',
     `role`        varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL DEFAULT 'agent' COMMENT '账户角色',
     `from`        varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL DEFAULT 'app' COMMENT '注册来源',
     `phone`       varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL DEFAULT '' COMMENT '账户号码',

@@ -16,6 +16,7 @@ Authorization: {{auth_token}}
   "captcha": "captcha",
   "profile": {
     "kind": 0,
+    "state": 0,
     "role": "agent",
     "phone": "{{testPhone2}}",
     "name": "高成",
@@ -40,8 +41,8 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 {
-  "phone": "18280058405",
-  "password": "Password",
+  "phone": "{{testPhone1}}",
+  "password": "password",
   "captcha": "captcha"
 }
 
@@ -51,7 +52,7 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 {
-  "phone": "17708001490"
+  "phone": "{{testPhone1}}"
 }
 
 ### 5 Profile view
@@ -73,15 +74,16 @@ Authorization: {{auth_token}}
   "profile": {
     "id": 1,
     "kind": 0,
+    "state": 0,
     "role": "agent",
     "phone": "{{testPhone1}}",
-    "name": "陈诚",
-    "nickname": "陈诚",
+    "name": "高成",
+    "nickname": "高成",
     "gender": "男",
     "openId": "",
     "from": "app",
     "password": "password",
-    "idNumber": "{{testIDNumber3}}",
+    "idNumber": "{{testIDNumber1}}",
     "jobTitle": "GM",
     "organize": "WAKE.LINK",
     "department": "R&D",
