@@ -30,19 +30,31 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	// Check parameter
 	if len(strings.TrimSpace(in.Phone)) == 0 || len(strings.TrimSpace(in.Password)) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "login touched, parameter error")
+		return nil, status.Errorf(codes.InvalidArgument, "login failed, parameter error")
 	}
 
 	// Query data
-	switch info, err := l.svcCtx.UserModel.FindOneByPhone(in.Phone); err {
+	record, err := l.svcCtx.UserModel.FindOneByPhone(in.Phone)
+
+	switch err {
 	case nil:
-		if info.Password != in.Password {
-			return nil, status.Errorf(codes.PasswordWrong, "login touched, password error")
+		if record.Password != in.Password {
+			return nil, status.Errorf(codes.PasswordWrong, "login failed, password error")
 		}
 	case model.ErrNotFound:
-		return nil, status.Errorf(codes.UserNotFound, "login touched, user not exist")
+		return nil, status.Errorf(codes.UserNotFound, "login failed, user not exist")
 	default:
-		return nil, status.Errorf(codes.Unknown, "login touched, unknown error")
+		return nil, status.Errorf(codes.Unknown, "login failed, unknown error")
+	}
+
+	// Check state
+	switch record.State {
+	case 0:
+	case 1:
+	case 2:
+		return nil, status.Errorf(codes.UserFreeze, "login failed, account freeze")
+	case 3:
+		return nil, status.Errorf(codes.UserRemoved, "login failed, account removed")
 	}
 
 	// Return result

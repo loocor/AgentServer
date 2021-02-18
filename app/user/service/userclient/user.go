@@ -14,17 +14,17 @@ import (
 )
 
 type (
-	LoginResp         = user.LoginResp
-	Profile           = user.Profile
-	RegReq            = user.RegReq
-	RegResp           = user.RegResp
-	ProfileViewReq    = user.ProfileViewReq
-	ProfileViewResp   = user.ProfileViewResp
-	ProfileUpdateReq  = user.ProfileUpdateReq
-	ProfileUpdateResp = user.ProfileUpdateResp
 	LoginReq          = user.LoginReq
+	LoginResp         = user.LoginResp
 	LogoutReq         = user.LogoutReq
 	LogoutResp        = user.LogoutResp
+	ProfileViewReq    = user.ProfileViewReq
+	ProfileViewResp   = user.ProfileViewResp
+	Profile           = user.Profile
+	RegReq            = user.RegReq
+	ProfileUpdateReq  = user.ProfileUpdateReq
+	ProfileUpdateResp = user.ProfileUpdateResp
+	RegResp           = user.RegResp
 
 	User interface {
 		Reg(ctx context.Context, in *RegReq) (*RegResp, error)

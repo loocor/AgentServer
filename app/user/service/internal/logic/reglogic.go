@@ -50,6 +50,7 @@ func (l *RegLogic) Reg(in *user.RegReq) (*user.RegResp, error) {
 	_, err = l.svcCtx.UserModel.Insert(
 		model.User{
 			Kind:       in.Profile.Kind,
+			State:      in.Profile.State,
 			Role:       in.Profile.Role,
 			Phone:      in.Profile.Phone,
 			Name:       in.Profile.Name,

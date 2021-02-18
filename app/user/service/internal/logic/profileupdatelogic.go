@@ -54,6 +54,7 @@ func (l *ProfileUpdateLogic) ProfileUpdate(in *user.ProfileUpdateReq) (*user.Pro
 		model.User{
 			Id:         in.Profile.Id,
 			Kind:       in.Profile.Kind,
+			State:      in.Profile.State,
 			Role:       in.Profile.Role,
 			Phone:      in.Profile.Phone,
 			Name:       in.Profile.Name,
