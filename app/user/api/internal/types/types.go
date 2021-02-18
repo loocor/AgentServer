@@ -23,7 +23,7 @@ type Profile struct {
 	DeleteTime int64  `json:"deleteTime, optional"`
 }
 
-type AuthResp struct {
+type AuthToken struct {
 	AccessToken  string `json:"accessToken"`
 	AccessExpire int64  `json:"accessExpire"`
 	RefreshAfter int64  `json:"refreshAfter"`
@@ -34,26 +34,48 @@ type RegReq struct {
 	Profile Profile `json:"profile"`
 }
 
+type RegResp struct {
+	Code    int32     `json:"code"`
+	Message string    `json:"message"`
+	Token   AuthToken `json:"token"`
+}
+
 type LoginReq struct {
 	Phone    string `json:"phone"`
 	Password string `json:"password"`
 	Captcha  string `json:"captcha"`
 }
 
+type LoginResp struct {
+	Code    int32     `json:"code"`
+	Message string    `json:"message"`
+	Token   AuthToken `json:"token"`
+}
+
 type LogoutReq struct {
 	Phone string `json:"phone"`
 }
 
-type CommonResp struct {
-	Code    int32       `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data, optional"`
+type LogoutResp struct {
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
 }
 
 type ProfileViewReq struct {
 	Phone string `json:"phone"`
 }
 
+type ProfileViewResp struct {
+	Code    int32   `json:"code"`
+	Message string  `json:"message"`
+	Profile Profile `json:"profile"`
+}
+
 type ProfileUpdateReq struct {
 	Profile Profile `json:"profile"`
+}
+
+type ProfileUpdateResp struct {
+	Code    int32  `json:"code"`
+	Message string `json:"message"`
 }

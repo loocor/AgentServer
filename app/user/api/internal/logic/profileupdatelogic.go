@@ -24,7 +24,7 @@ func NewProfileUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) Prof
 	}
 }
 
-func (l *ProfileUpdateLogic) ProfileUpdate(req types.ProfileUpdateReq) (*types.CommonResp, error) {
+func (l *ProfileUpdateLogic) ProfileUpdate(req types.ProfileUpdateReq) (*types.ProfileUpdateResp, error) {
 	resp, err := l.svcCtx.UserRpc.ProfileUpdate(
 		l.ctx, &userclient.ProfileUpdateReq{
 			Profile: &userclient.Profile{
@@ -47,14 +47,12 @@ func (l *ProfileUpdateLogic) ProfileUpdate(req types.ProfileUpdateReq) (*types.C
 			},
 		},
 	)
-
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.CommonResp{
+	return &types.ProfileUpdateResp{
 		Code:    resp.Code,
 		Message: resp.Message,
-		Data:    resp.Data,
 	}, nil
 }

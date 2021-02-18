@@ -26,7 +26,7 @@ func NewAuthLogic(ctx context.Context, svcCtx *svc.ServiceContext) AuthLogic {
 	}
 }
 
-func (l *AuthLogic) Auth() (*types.AuthResp, error) {
+func (l *AuthLogic) Auth() (*types.AuthToken, error) {
 	var accessExpire = l.svcCtx.Config.Auth.AccessExpire
 	now := time.Now().Unix()
 	accessToken, err := l.GenToken(now, l.svcCtx.Config.Auth.AccessSecret, nil, accessExpire)
@@ -34,7 +34,7 @@ func (l *AuthLogic) Auth() (*types.AuthResp, error) {
 		return nil, err
 	}
 
-	return &types.AuthResp{
+	return &types.AuthToken{
 		AccessToken:  accessToken,
 		AccessExpire: now + accessExpire,
 		RefreshAfter: now + accessExpire/2,

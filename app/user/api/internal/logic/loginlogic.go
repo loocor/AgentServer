@@ -24,7 +24,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) LoginLogic {
 	}
 }
 
-func (l *LoginLogic) Login(req types.LoginReq) (*types.CommonResp, error) {
+func (l *LoginLogic) Login(req types.LoginReq) (*types.LoginResp, error) {
 	resp, err := l.svcCtx.UserRpc.Login(
 		l.ctx, &userclient.LoginReq{
 			Phone:    req.Phone,
@@ -32,17 +32,19 @@ func (l *LoginLogic) Login(req types.LoginReq) (*types.CommonResp, error) {
 			Captcha:  req.Captcha,
 		},
 	)
-
-	authLogic := NewAuthLogic(l.ctx, l.svcCtx)
-	token, err := authLogic.Auth()
-
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.CommonResp{
+	authLogic := NewAuthLogic(l.ctx, l.svcCtx)
+	token, err := authLogic.Auth()
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.LoginResp{
 		Code:    resp.Code,
 		Message: resp.Message,
-		Data:    token,
+		Token:   *token,
 	}, nil
 }

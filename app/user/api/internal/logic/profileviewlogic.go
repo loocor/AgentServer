@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 
+	"github.com/jinzhu/copier"
 	"github.com/tal-tech/go-zero/core/logx"
 
 	"agent/app/user/api/internal/svc"
@@ -24,20 +25,25 @@ func NewProfileViewLogic(ctx context.Context, svcCtx *svc.ServiceContext) Profil
 	}
 }
 
-func (l *ProfileViewLogic) ProfileView(req types.ProfileViewReq) (*types.CommonResp, error) {
+func (l *ProfileViewLogic) ProfileView(req types.ProfileViewReq) (*types.ProfileViewResp, error) {
 	resp, err := l.svcCtx.UserRpc.ProfileView(
 		l.ctx, &userclient.ProfileViewReq{
 			Phone: req.Phone,
 		},
 	)
-
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.CommonResp{
+	// Copy record to profile
+	profile := &types.Profile{}
+	if err := copier.Copy(&profile, &resp.Profile); err != nil {
+		logx.Error(err)
+	}
+
+	return &types.ProfileViewResp{
 		Code:    resp.Code,
 		Message: resp.Message,
-		Data:    resp.Data,
+		Profile: *profile,
 	}, nil
 }

@@ -24,20 +24,18 @@ func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) LogoutLogic
 	}
 }
 
-func (l *LogoutLogic) Logout(req types.LogoutReq) (*types.CommonResp, error) {
+func (l *LogoutLogic) Logout(req types.LogoutReq) (*types.LogoutResp, error) {
 	resp, err := l.svcCtx.UserRpc.Logout(
 		l.ctx, &userclient.LogoutReq{
 			Phone: req.Phone,
 		},
 	)
-
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.CommonResp{
+	return &types.LogoutResp{
 		Code:    resp.Code,
 		Message: resp.Message,
-		Data:    resp.Data,
 	}, nil
 }

@@ -24,7 +24,7 @@ func NewRegLogic(ctx context.Context, svcCtx *svc.ServiceContext) RegLogic {
 	}
 }
 
-func (l *RegLogic) Reg(req types.RegReq) (*types.CommonResp, error) {
+func (l *RegLogic) Reg(req types.RegReq) (*types.RegResp, error) {
 	resp, err := l.svcCtx.UserRpc.Reg(
 		l.ctx, &userclient.RegReq{
 			Captcha: req.Captcha,
@@ -47,17 +47,19 @@ func (l *RegLogic) Reg(req types.RegReq) (*types.CommonResp, error) {
 			},
 		},
 	)
-
-	authLogic := NewAuthLogic(l.ctx, l.svcCtx)
-	token, err := authLogic.Auth()
-
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.CommonResp{
+	authLogic := NewAuthLogic(l.ctx, l.svcCtx)
+	token, err := authLogic.Auth()
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.RegResp{
 		Code:    resp.Code,
 		Message: resp.Message,
-		Data:    token,
+		Token:   *token,
 	}, nil
 }
