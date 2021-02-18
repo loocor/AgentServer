@@ -29,18 +29,22 @@ type Profile {
 	DeleteTime int64  `json:"deleteTime, optional"`
 }
 
-type (
-	// for account auth
-	AuthResp {
-		AccessToken  string `json:"accessToken"`
-		AccessExpire int64  `json:"accessExpire"`
-		RefreshAfter int64  `json:"refreshAfter"`
-	}
+type AuthToken {
+	AccessToken  string `json:"accessToken"`
+	AccessExpire int64  `json:"accessExpire"`
+	RefreshAfter int64  `json:"refreshAfter"`
+}
 
-	// for account reg, login & logout
+type (
 	RegReq {
 		Captcha string  `json:"captcha"`
 		Profile Profile `json:"profile"`
+	}
+
+	RegResp {
+		Code    int32     `json:"code"`
+		Message string    `json:"message"`
+		Token   AuthToken `json:"token"`
 	}
 
 	LoginReq {
@@ -49,31 +53,45 @@ type (
 		Captcha  string `json:"captcha"`
 	}
 
+	LoginResp {
+		Code    int32     `json:"code"`
+		Message string    `json:"message"`
+		Token   AuthToken `json:"token"`
+	}
+
 	LogoutReq {
 		Phone string `json:"phone"`
 	}
 
-	CommonResp {
-		Code    int32       `json:"code"`
-		Message string      `json:"message"`
-		Data    interface{} `json:"data, optional"`
+	LogoutResp {
+		Code    int32  `json:"code"`
+		Message string `json:"message"`
 	}
 
-	// for profile view & update
 	ProfileViewReq {
 		Phone string `json:"phone"`
+	}
+
+	ProfileViewResp {
+		Code    int32   `json:"code"`
+		Message string  `json:"message"`
+		Profile Profile `json:"profile"`
 	}
 
 	ProfileUpdateReq {
 		Profile Profile `json:"profile"`
 	}
+
+	ProfileUpdateResp {
+		Code    int32  `json:"code"`
+		Message string `json:"message"`
+	}
 )
 
 service user-api {
-	@doc(summary: "user auth token")
-	
+	@doc(summary: "AuthToken")
 	@handler AuthHandler
-	post /api/v1/auth () returns (AuthResp)
+	post /api/v1/auth () returns (AuthToken)
 }
 
 @server(
@@ -81,16 +99,17 @@ service user-api {
 )
 
 service user-api {
-	@doc(summary: "user reg, login and logout")
-	
+	@doc(summary: "Reg")
 	@handler RegHandler
-	post /api/v1/user/reg (RegReq) returns (CommonResp)
+	post /api/v1/user/reg (RegReq) returns (RegResp)
 	
+	@doc(summary: "Login")
 	@handler LoginHandler
-	post /api/v1/user/login (LoginReq) returns (CommonResp)
+	post /api/v1/user/login (LoginReq) returns (LoginResp)
 	
+	@doc(summary: "Logout")
 	@handler LogoutHandler
-	post /api/v1/user/logout (LogoutReq) returns (CommonResp)
+	post /api/v1/user/logout (LogoutReq) returns (LogoutResp)
 }
 
 @server(
@@ -99,11 +118,11 @@ service user-api {
 )
 
 service user-api {
-	@doc(summary: "user profile view and update")
-	
+	@doc(summary: "Profile view")
 	@handler ProfileViewHandler
-	get /api/v1/user/profile (ProfileViewReq) returns (CommonResp)
+	get /api/v1/user/profile (ProfileViewReq) returns (ProfileViewResp)
 	
+	@doc(summary: "Profile update")
 	@handler ProfileUpdateHandler
-	post /api/v1/user/profile (ProfileUpdateReq) returns (CommonResp)
+	post /api/v1/user/profile (ProfileUpdateReq) returns (ProfileUpdateResp)
 }

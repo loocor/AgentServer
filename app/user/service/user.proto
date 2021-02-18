@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package user;
 
-import "google/protobuf/any.proto";
-
 message Profile {
   int64 id = 1;
   int64 kind = 2;
@@ -30,32 +28,56 @@ message RegReq {
   Profile profile = 1;
   string captcha = 2;
 }
+
+message RegResp {
+  int32 code = 1;
+  string message = 2;
+}
+
 message LoginReq {
   string phone = 1;
   string password = 2;
   string captcha = 3;
 }
+
+message LoginResp {
+  int32 code = 1;
+  string message = 2;
+}
+
 message LogoutReq {
   string phone = 1;
 }
-message CommonResp {
+
+message LogoutResp {
   int32 code = 1;
   string message = 2;
-  google.protobuf.Any data = 20;
 }
 
 message ProfileViewReq {
   string phone = 1;
 }
+
+message ProfileViewResp {
+  int32 code = 1;
+  string message = 2;
+  Profile profile = 3;
+}
+
 message ProfileUpdateReq {
   Profile profile = 1;
 }
 
-service User {
-  rpc Reg(RegReq) returns(CommonResp);
-  rpc Login(LoginReq) returns(CommonResp);
-  rpc Logout(LogoutReq) returns(CommonResp);
+message ProfileUpdateResp {
+  int32 code = 1;
+  string message = 2;
+}
 
-  rpc ProfileView(ProfileViewReq) returns(CommonResp);
-  rpc ProfileUpdate(ProfileUpdateReq) returns(CommonResp);
+service User {
+  rpc Reg(RegReq) returns(RegResp);
+  rpc Login(LoginReq) returns(LoginResp);
+  rpc Logout(LogoutReq) returns(LogoutResp);
+
+  rpc ProfileView(ProfileViewReq) returns(ProfileViewResp);
+  rpc ProfileUpdate(ProfileUpdateReq) returns(ProfileUpdateResp);
 }
